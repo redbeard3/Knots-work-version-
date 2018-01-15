@@ -1,38 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_climb"
+            android:icon="@drawable/climb"
+            android:title="@string/climb_top_list" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_sea"
+            android:icon="@drawable/sea"
+            android:title="@string/sea_top_list" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_fish"
+            android:icon="@drawable/fish"
+            android:title="@string/fish_top_list" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_mark"
+            android:icon="@drawable/mark"
+            android:title="@string/mark_top_list" />
+        <item
+            android:id="@+id/nav_lace"
+            android:icon="@drawable/lace"
+            android:title="@string/lace_top_list" />
+        <item
+            android:id="@+id/nav_dekor"
+            android:icon="@drawable/dekor"
+            android:title="@string/decor_top_list" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/useful">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_favorite"
+                android:icon="@drawable/favorite"
+                android:title="@string/favorite_top_list" />
+        </menu>
+    </item>
+
+    <item android:title="@string/communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_source"
+                android:icon="@drawable/ic_info_black_48dp"
+                android:title="@string/itemAbout"/>
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="@string/feedback"/>
+            <item
+                android:id="@+id/nav_estimate"
+                android:icon="@drawable/ic_star_half_black_48dp"
+                android:title="@string/estimate"/>
         </menu>
     </item>
 
 </menu>
+
