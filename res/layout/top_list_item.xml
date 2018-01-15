@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/kind_knot_image"
+        android:layout_width="@dimen/KnotKind_ImageView_width"
+        android:layout_height="@dimen/KnotKind_ImageView_height"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/kind_knot"
+        android:textSize="@dimen/textSizeOnTopListKnot"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/kind_knot_image"
+        android:layout_toEndOf="@+id/kind_knot_image"
+        android:layout_marginLeft="31dp"
+        android:layout_marginStart="31dp" />
+
+</RelativeLayout>
