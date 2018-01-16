@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.red_beard.android.knots.custom_class.CustomCursorAdapter;
+
 import java.io.IOException;
 
 
