@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content">
+
+<ImageView
+    android:layout_width="@dimen/KnotImageWidthOnFragmentListKnot"
+    android:layout_height="@dimen/KnotImageHeightOnFragmentListKnot"
+    android:id="@+id/knot_image"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+/>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/knot_name_on_list"
+    android:textSize="@dimen/textSizeOnFragmentListKnot"
+    android:layout_centerVertical="true"
+    android:layout_toRightOf="@+id/knot_image"
+    android:layout_toEndOf="@+id/knot_image"
+ />
+
+</RelativeLayout>
