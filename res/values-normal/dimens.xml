@@ -1,0 +1,22 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="textSizeknotTextView">25sp</dimen>             <!-- on KnotDetailFragment -->
+    <dimen name="textSizefavoriteCheckBox">20sp</dimen>         <!-- on KnotDetailFragment -->
+    <dimen name="textSizedescriptionKnotTextView">15sp</dimen>  <!-- on KnotDetailFragment -->
+    <dimen name="textSizeOnTopListKnot">17dp</dimen>            <!-- on TopList -->
+    <dimen name="textSizeOnFragmentListKnot">8pt</dimen>        <!-- on ListFragment -->
+    <dimen name="KnotKind_ImageView_width">70dp</dimen>         <!-- on TopList -->
+    <dimen name="KnotKind_ImageView_height">40dp</dimen>        <!-- on TopList -->
+    <dimen name="KnotImageWidthOnFragmentListKnot">150dp</dimen>         <!-- on ListFragment -->
+    <dimen name="KnotImageHeightOnFragmentListKnot">100dp</dimen>         <!-- on ListFragment -->
+    <dimen name="OthersLinks">14dp</dimen>                      <!-- on AboutActivity -->
+    <dimen name="textSizeVersionApp">16dp</dimen>               <!-- on AboutActivity -->
+    <dimen name="textSizeLinks">18dp</dimen>                    <!-- on AboutActivity -->
+</resources>
