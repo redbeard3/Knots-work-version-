@@ -1,108 +1,163 @@
 package com.red_beard.android.knots;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.red_beard.android.knots.custom_class.DynamicImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link KnotDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link KnotDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class KnotDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class KnotDetailFragment extends android.support.v4.app.Fragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private long knotId;
+    private KnotDatabaseHelper myDbHelper;
+    private static final String EXTRA_KNOT_ID = "knot_id";
+    private boolean isCheckFavorite;
+    private TextView knotNameTextView;
+    private TextView knotDescriptionTextView;
+    private CheckBox favoriteCheckBox;
+    private Cursor cursor;
+    private LinearLayout linearLayout;
 
-    private OnFragmentInteractionListener mListener;
-
-    public KnotDetailFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment KnotDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static KnotDetailFragment newInstance(String param1, String param2) {
-        KnotDetailFragment fragment = new KnotDetailFragment();
+    public static KnotDetailFragment newInstance(long id){
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(EXTRA_KNOT_ID, id);
+
+        KnotDetailFragment fragment = new KnotDetailFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_knot_detail, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (savedInstanceState != null){
+            knotId = savedInstanceState.getLong(EXTRA_KNOT_ID);
         }
+        View view = inflater.inflate(R.layout.fragment_knot_detail, container, false);
+
+        return view;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    public void onStart(){
+        super.onStart();
+        openDB();
+        View view = getView();
+        if (view != null) {
+            knotNameTextView = (TextView) view.findViewById(R.id.knotTextView);
+            knotDescriptionTextView = (TextView) view.findViewById(R.id.descriptionKnotTextView);
+
+            linearLayout = (LinearLayout) view.findViewById(R.id.linearLayoutOnKnotDetail);
+
+            favoriteCheckBox = (CheckBox) view.findViewById(R.id.favoriteCheckBox);
+            favoriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    openDB();
+                    isCheckFavorite = favoriteCheckBox.isChecked();
+                    ContentValues favoriteValues = new ContentValues();
+                    favoriteValues.put("FAVORITE", isCheckFavorite);
+                    try{
+                        myDbHelper.onUpdate("KNOT", favoriteValues,
+                                "_id = ?", new String[] {Integer.toString((int)knotId)});
+                        myDbHelper.close();
+                    } catch (SQLException ex){
+
+                    }
+                }
+            });
+            openKnotDetail("_id = ?");
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public int getItemCount(){
+        return 14;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public void setKnotId(long id){
+        this.knotId = id;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putLong(EXTRA_KNOT_ID, knotId);
+    }
+
+    private void openKnotDetail(String condition){
+        try {
+            cursor = myDbHelper.query("KNOT",
+                    new String[]{"NAME", "DESCRIPTION", "FAVORITE"},
+                    condition,
+                    new String[]{Integer.toString((int) knotId)},
+                    null, null, null);
+            if (cursor.moveToFirst()) {
+                knotNameTextView.setText(cursor.getString(0));
+                knotDescriptionTextView.setText(cursor.getString(1));
+                favoriteCheckBox.setChecked(cursor.getInt(2) == 1);
+                String subtitle = cursor.getString(0);
+                AppCompatActivity activity = (AppCompatActivity) getActivity();
+                activity.getSupportActionBar().setTitle(subtitle);
+            }
+
+            String stringKnotId = Integer.toString((int) knotId);
+
+            for (int i=0;i<=25;i++) {
+                String stringI = Integer.toString(i);
+                String imageName = stringKnotId + "/" + stringI + ".jpg";
+                try {
+                    InputStream inputStream = getActivity().getAssets().open(imageName);
+                    Drawable drawable = Drawable.createFromStream(inputStream, null);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+                    layoutParams.setMargins(15, 15,15,5);
+                    DynamicImageView imageView = new DynamicImageView(getContext(), null);
+                    imageView.setImageDrawable(drawable);
+                    imageView.setLayoutParams(layoutParams);
+                    linearLayout.addView(imageView);
+                    TextView numberImage = new TextView(getContext());
+                    String number = Integer.toString(i+1);
+                    numberImage.setText(number);
+                    numberImage.setLayoutParams(layoutParams);
+                    linearLayout.addView(numberImage);
+                } catch (IOException ex) {
+                    return;
+                }
+            }
+
+            cursor.close();
+            myDbHelper.close();
+        } catch (SQLException ex){
+            Toast toastEx = Toast.makeText(this.getActivity(), "DataBase unavailable", Toast.LENGTH_SHORT);
+            toastEx.show();
+        }
+    }
+
+    private void openDB(){
+        myDbHelper = new KnotDatabaseHelper(this.getActivity());
+        try {
+            myDbHelper.createDataBase();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+        try {
+            myDbHelper.openDataBase();
+        } catch (SQLException sqle) {
+            throw sqle;
+        }
+    }
+
 }
