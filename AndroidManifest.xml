@@ -21,15 +21,15 @@
         </activity>
         <activity
             android:name=".HostActivityTwo"
-            android:label="@string/title_activity_host_two"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SearchResultsHostActivity"
-            android:label="@string/title_activity_search_results_host"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
