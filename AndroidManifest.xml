@@ -26,6 +26,10 @@
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchResultsHostActivity"
+            android:label="@string/title_activity_search_results_host"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
