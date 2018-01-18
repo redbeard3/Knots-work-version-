@@ -10,20 +10,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.red_beard.android.knots.HostActivityTwo"
-    tools:showIn="@layout/app_bar_host_activity_two">
+    tools:context="com.red_beard.android.knots.HostActivity"
+    tools:showIn="@layout/app_bar_host_activity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         class="com.red_beard.android.knots.KnotListFragment"
-        android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list_frag"/>
-
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_weight="3"
-        android:layout_height="match_parent"
-        android:id="@+id/frag_container"/>
-
 </LinearLayout>

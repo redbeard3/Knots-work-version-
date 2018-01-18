@@ -107,7 +107,7 @@ public class Top_Level_Activity extends AppCompatActivity
 
         @Override
         public void onClick (View view){
-            Intent intent = HostActivityTwo.newIntent(Top_Level_Activity.this, knotListView.getId());
+            Intent intent = HostActivity.newIntent(Top_Level_Activity.this, knotListView.getId());
             startActivity(intent);
         }
     }
@@ -156,7 +156,7 @@ public class Top_Level_Activity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Intent searchIntent = SearchResultsHostActivity.newSearchIntent(Top_Level_Activity.this, query);
+                Intent searchIntent = SearchHostActivity.newSearchIntent(Top_Level_Activity.this, query);
                 startActivity(searchIntent);
                 return false;
             }

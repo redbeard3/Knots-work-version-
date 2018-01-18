@@ -41,7 +41,7 @@ public class KnotListFragment extends ListFragment {
     @Override
     public void onStart(){
         super.onStart();
-        pos = (int) getActivity().getIntent().getSerializableExtra(HostActivityTwo.EXTRA_KNOT);     //Получаем, какой тип узлов нужно показать
+        pos = (int) getActivity().getIntent().getSerializableExtra(HostActivity.EXTRA_KNOT);     //Получаем, какой тип узлов нужно показать
         openDB();
 
         String subtitle = "";

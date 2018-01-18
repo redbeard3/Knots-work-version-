@@ -18,14 +18,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HostActivityTwo"
+            android:name=".HostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetailActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SearchResultsHostActivity"
+            android:name=".SearchHostActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -36,7 +36,6 @@
             android:name=".SimpleEMail"
             android:label="@string/feedback"
             android:parentActivityName=".Top_Level_Activity" />
-
     </application>
 
 </manifest>

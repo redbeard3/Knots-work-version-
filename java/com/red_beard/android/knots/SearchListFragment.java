@@ -39,7 +39,7 @@ public class SearchListFragment extends ListFragment {
     @Override
     public void onStart(){
         super.onStart();
-        String inputQuery = (String) getActivity().getIntent().getSerializableExtra(SearchResultsHostActivity.SEARCH_MESSAGE);
+        String inputQuery = (String) getActivity().getIntent().getSerializableExtra(SearchHostActivity.SEARCH_MESSAGE);
         openDB();
         setOnDataBaseQuery(inputQuery);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
