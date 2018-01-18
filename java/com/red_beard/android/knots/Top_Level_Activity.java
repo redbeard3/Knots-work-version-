@@ -23,7 +23,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Top_Level_Activity_Two extends AppCompatActivity
+public class Top_Level_Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private RecyclerView topRecyclerView;
@@ -33,7 +33,7 @@ public class Top_Level_Activity_Two extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_top_level);
         Toolbar toolbar = (Toolbar) findViewById(R.id.top_level_toolbar);
         setSupportActionBar(toolbar);
 
@@ -107,7 +107,7 @@ public class Top_Level_Activity_Two extends AppCompatActivity
 
         @Override
         public void onClick (View view){
-            Intent intent = HostActivityTwo.newIntent(Top_Level_Activity_Two.this, knotListView.getId());
+            Intent intent = HostActivityTwo.newIntent(Top_Level_Activity.this, knotListView.getId());
             startActivity(intent);
         }
     }
@@ -156,7 +156,7 @@ public class Top_Level_Activity_Two extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Intent searchIntent = SearchResultsHostActivity.newSearchIntent(Top_Level_Activity_Two.this, query);
+                Intent searchIntent = SearchResultsHostActivity.newSearchIntent(Top_Level_Activity.this, query);
                 startActivity(searchIntent);
                 return false;
             }
@@ -180,11 +180,11 @@ public class Top_Level_Activity_Two extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_send) {
-            Intent mailIntent = SimpleEMail.newIntent(Top_Level_Activity_Two.this);
+            Intent mailIntent = SimpleEMail.newIntent(Top_Level_Activity.this);
             startActivity(mailIntent);
         }
         else if (id == R.id.nav_source) {
-            Intent sourceIntent = SourceActivity.newIntent(Top_Level_Activity_Two.this);
+            Intent sourceIntent = SourceActivity.newIntent(Top_Level_Activity.this);
             startActivity(sourceIntent);
         } else if (id == R.id.nav_estimate){
             final String appPackageName = getApplicationContext().getPackageName();

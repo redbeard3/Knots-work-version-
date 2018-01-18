@@ -108,7 +108,7 @@ public class HostActivityTwo extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.home) {
-            startActivity(new Intent(this, Top_Level_Activity_Two.class));
+            startActivity(new Intent(this, Top_Level_Activity.class));
         }
         return super.onOptionsItemSelected(item);
     }

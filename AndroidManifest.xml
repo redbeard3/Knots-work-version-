@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Top_Level_Activity_Two"
+            android:name=".Top_Level_Activity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,11 +31,11 @@
         <activity
             android:name=".SourceActivity"
             android:label="@string/itemAbout"
-            android:parentActivityName=".Top_Level_Activity_Two" />
+            android:parentActivityName=".Top_Level_Activity" />
         <activity
             android:name=".SimpleEMail"
             android:label="@string/feedback"
-            android:parentActivityName=".Top_Level_Activity_Two" />
+            android:parentActivityName=".Top_Level_Activity" />
 
     </application>
 
