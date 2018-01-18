@@ -19,24 +19,23 @@
         </activity>
         <activity
             android:name=".HostActivityTwo"
-            android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
         <activity
             android:name=".DetailActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
         <activity
             android:name=".SearchResultsHostActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
         <activity
             android:name=".SourceActivity"
             android:label="@string/itemAbout"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".Top_Level_Activity"></activity>
         <activity
             android:name=".SimpleEMail"
             android:label="@string/feedback"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".Top_Level_Activity"></activity>
     </application>
 
 </manifest>
