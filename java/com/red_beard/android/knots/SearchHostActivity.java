@@ -45,7 +45,6 @@ public class SearchHostActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.activity_host_search_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
