@@ -20,7 +20,7 @@ import java.io.OutputStream;
 public class KnotDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "knotdb";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     String DB_PATH = null;
     private SQLiteDatabase knotDataBase;
     private final Context myContext;
