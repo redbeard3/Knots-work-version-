@@ -28,7 +28,6 @@ public class Top_Level_Activity extends AppCompatActivity
 
     private RecyclerView topRecyclerView;
     private KindAdapter kindAdapter;
-    private static final String DIALOG_ABOUT_KNOTS = "DialogAboutKnots";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class Top_Level_Activity extends AppCompatActivity
         topList.add(new KnotListView(R.string.sea_top_list, R.drawable.sea,1));
         topList.add(new KnotListView(R.string.fish_top_list, R.drawable.fish,2));
         topList.add(new KnotListView(R.string.mark_top_list, R.drawable.mark,3));
-        //topList.add(new KnotListView(R.string.tie_top_list, R.drawable.tie,4));
+        topList.add(new KnotListView(R.string.tie_top_list, R.drawable.tie,4));
         topList.add(new KnotListView(R.string.lace_top_list, R.drawable.lace,5));
         topList.add(new KnotListView(R.string.decor_top_list, R.drawable.dekor,6));
         topList.add(new KnotListView(R.string.favorite_top_list, R.drawable.favorite,7));

@@ -102,9 +102,7 @@ public class HostActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         if (id == R.id.home) {
@@ -131,9 +129,9 @@ public class HostActivity extends AppCompatActivity
         } else if (id == R.id.nav_mark) {
             Intent intent = HostActivity.newIntent(HostActivity.this, 3);
             startActivity(intent);
-            //} else if (id == R.id.nav_tie) {
-            //    Intent intent = HostActivity.newIntent(HostActivity.this, 4);
-            //    startActivity(intent);
+        } else if (id == R.id.nav_tie) {
+               Intent intent = HostActivity.newIntent(HostActivity.this, 4);
+               startActivity(intent);
         } else if (id == R.id.nav_lace) {
             Intent intent = HostActivity.newIntent(HostActivity.this, 5);
             startActivity(intent);

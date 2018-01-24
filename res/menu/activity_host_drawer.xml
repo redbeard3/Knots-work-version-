@@ -20,6 +20,10 @@
             android:icon="@drawable/mark"
             android:title="@string/mark_top_list" />
         <item
+            android:id="@+id/nav_tie"
+            android:icon="@drawable/tie"
+            android:title="@string/tie_top_list" />
+        <item
             android:id="@+id/nav_lace"
             android:icon="@drawable/lace"
             android:title="@string/lace_top_list" />
