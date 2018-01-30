@@ -3,6 +3,7 @@ package com.red_beard.android.knots;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.red_beard.android.knots.custom_class.DynamicImageView;
+import com.red_beard.android.knots.database_class.DBHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +26,7 @@ import java.io.InputStream;
 public class KnotDetailFragment extends android.support.v4.app.Fragment {
 
     private long knotId;
-    private KnotDatabaseHelper myDbHelper;
+    private DBHelper myDbHelper;
     private static final String EXTRA_KNOT_ID = "knot_id";
     private boolean isCheckFavorite;
     private TextView knotNameTextView;
@@ -32,6 +34,7 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
     private CheckBox favoriteCheckBox;
     private Cursor cursor;
     private LinearLayout linearLayout;
+    private SQLiteDatabase db;
 
     public static KnotDetailFragment newInstance(long id){
         Bundle args = new Bundle();
@@ -73,9 +76,9 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
                     ContentValues favoriteValues = new ContentValues();
                     favoriteValues.put("FAVORITE", isCheckFavorite);
                     try{
-                        myDbHelper.onUpdate("KNOT", favoriteValues,
+                        db.update("KNOTS", favoriteValues,
                                 "_id = ?", new String[] {Integer.toString((int)knotId)});
-                        myDbHelper.close();
+                        db.close();
                     } catch (SQLException ex){
 
                     }
@@ -100,7 +103,7 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
 
     private void openKnotDetail(String condition){
         try {
-            cursor = myDbHelper.query("KNOT",
+            cursor = db.query("KNOTS",
                     new String[]{"NAME", "DESCRIPTION", "FAVORITE"},
                     condition,
                     new String[]{Integer.toString((int) knotId)},
@@ -139,7 +142,7 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
             }
 
             cursor.close();
-            myDbHelper.close();
+            db.close();
         } catch (SQLException ex){
             Toast toastEx = Toast.makeText(this.getActivity(), "DataBase unavailable", Toast.LENGTH_SHORT);
             toastEx.show();
@@ -147,14 +150,9 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
     }
 
     private void openDB(){
-        myDbHelper = new KnotDatabaseHelper(this.getActivity());
         try {
-            myDbHelper.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-        try {
-            myDbHelper.openDataBase();
+            myDbHelper = new DBHelper(this.getActivity());
+            db = myDbHelper.getWritableDatabase();
         } catch (SQLException sqle) {
             throw sqle;
         }

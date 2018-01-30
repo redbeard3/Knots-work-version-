@@ -3,6 +3,7 @@ package com.red_beard.android.knots;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.red_beard.android.knots.custom_class.CustomCursorAdapter;
-
-import java.io.IOException;
+import com.red_beard.android.knots.database_class.DBHelper;
 
 
 
@@ -22,8 +22,9 @@ public class KnotListFragment extends ListFragment {
 
     CustomCursorAdapter cursorAdapter;
     private int pos;
-    private KnotDatabaseHelper myDbHelper;
+    private DBHelper myDbHelper;
     private Cursor cursor;
+    private SQLiteDatabase db;
 
     static interface KnotListListener{
         void itemClicked(long id);
@@ -99,7 +100,7 @@ public class KnotListFragment extends ListFragment {
     public void onDestroy(){
         super.onDestroy();
         cursor.close();
-        myDbHelper.close();
+        db.close();
     }
 
     @Override
@@ -111,7 +112,7 @@ public class KnotListFragment extends ListFragment {
 
     private void openKnotList(String typeKnotList){
         try {
-            cursor = myDbHelper.query("KNOT",
+            cursor = db.query("KNOTS",
                     new String[] {"_id", "NAME"},
                     typeKnotList,
                     null, null, null,
@@ -128,14 +129,9 @@ public class KnotListFragment extends ListFragment {
     }
 
     private void openDB(){
-        myDbHelper = new KnotDatabaseHelper(this.getActivity());
         try {
-            myDbHelper.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-        try {
-            myDbHelper.openDataBase();
+            myDbHelper = new DBHelper(this.getActivity());
+            db = myDbHelper.getWritableDatabase();
         } catch (SQLException sqle) {
             throw sqle;
         }

@@ -3,6 +3,7 @@ package com.red_beard.android.knots;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +14,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.red_beard.android.knots.custom_class.CustomCursorAdapter;
-
-import java.io.IOException;
+import com.red_beard.android.knots.database_class.DBHelper;
 
 
 public class SearchListFragment extends ListFragment {
 
-    private KnotDatabaseHelper myDbHelper;
+    private DBHelper myDbHelper;
+    private SQLiteDatabase db;
     private Cursor cursor;
     CustomCursorAdapter cursorAdapter;
 
@@ -48,7 +49,7 @@ public class SearchListFragment extends ListFragment {
 
     private void setOnDataBaseQuery(String query){
         try {
-            cursor = myDbHelper.query("KNOT",
+            cursor = db.query("KNOTS",
                     new String[]{"_id", "NAME", "DESCRIPTION", "CLIMB", "SEA", "FISH", "OTHER", "TIE", "LACE", "TAGS"},
                     "("+"NAME"+" LIKE '%"+query+"%') " + "OR ("+"DESCRIPTION"+" LIKE '%" + query+"%')" +
                             " OR ("+"TAGS"+" LIKE '%" + query+"%')",
@@ -80,18 +81,13 @@ public class SearchListFragment extends ListFragment {
     public void onDestroy(){
         super.onDestroy();
         cursor.close();
-        myDbHelper.close();
+        db.close();
     }
 
     private void openDB(){
-        myDbHelper = new KnotDatabaseHelper(this.getActivity());
         try {
-            myDbHelper.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-        try {
-            myDbHelper.openDataBase();
+            myDbHelper = new DBHelper(this.getActivity());
+            db = myDbHelper.getWritableDatabase();
         } catch (SQLException sqle) {
             throw sqle;
         }
