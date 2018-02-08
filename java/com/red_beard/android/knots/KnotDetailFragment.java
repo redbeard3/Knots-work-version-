@@ -76,7 +76,7 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
                     ContentValues favoriteValues = new ContentValues();
                     favoriteValues.put("FAVORITE", isCheckFavorite);
                     try{
-                        db.update("KNOTS", favoriteValues,
+                        db.update("KNOT", favoriteValues,
                                 "_id = ?", new String[] {Integer.toString((int)knotId)});
                         db.close();
                     } catch (SQLException ex){
@@ -103,7 +103,7 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
 
     private void openKnotDetail(String condition){
         try {
-            cursor = db.query("KNOTS",
+            cursor = db.query("KNOT",
                     new String[]{"NAME", "DESCRIPTION", "FAVORITE"},
                     condition,
                     new String[]{Integer.toString((int) knotId)},
