@@ -22,7 +22,7 @@ import java.io.IOException;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "knotdb";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 2;
     private final Context myContext;
 
     private static final String KNOTDATABASE = "databaseLog";
@@ -57,7 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
         knotData.put("DECOR", decor);
         knotData.put("FAVORITE", favorite);
         knotData.put("TAGS", tags);
-        db.insert("KNOT", null, knotData);
+        db.insert("KNOTS", null, knotData);
     }
 
     private void parseTable(SQLiteDatabase db){
@@ -69,16 +69,27 @@ public class DBHelper extends SQLiteOpenHelper {
             while (eventType != XmlPullParser.END_DOCUMENT){
                 if ((eventType == XmlPullParser.START_TAG) && (xmlResourceParser.getName().equals("record"))) {
                     String name = xmlResourceParser.getAttributeValue(null, "name");
+                        Log.e(KNOTDATABASE, "name = " + name);
                     String description = xmlResourceParser.getAttributeValue(null, "desctription");
+                        Log.e(KNOTDATABASE, "description = " + description);
                     String climb = xmlResourceParser.getAttributeValue(null, "climb");
+                        Log.e(KNOTDATABASE, "climb = " + climb);
                     String sea = xmlResourceParser.getAttributeValue(null, "sea");
+                        Log.e(KNOTDATABASE, "sea = " + sea);
                     String fish = xmlResourceParser.getAttributeValue(null, "fish");
+                        Log.e(KNOTDATABASE, "fish = " + fish);
                     String lace = xmlResourceParser.getAttributeValue(null, "lace");
+                        Log.e(KNOTDATABASE, "lace = " + lace);
                     String tie = xmlResourceParser.getAttributeValue(null, "tie");
+                        Log.e(KNOTDATABASE, "tie = " + tie);
                     String other = xmlResourceParser.getAttributeValue(null, "other");
+                        Log.e(KNOTDATABASE, "other = " + other);
                     String decor = xmlResourceParser.getAttributeValue(null, "decor");
+                        Log.e(KNOTDATABASE, "decor = " + decor);
                     String favorite = xmlResourceParser.getAttributeValue(null, "favorite");
+                         Log.e(KNOTDATABASE, "favorite = " + favorite);
                     String tags = xmlResourceParser.getAttributeValue(null, "tags");
+                        Log.e(KNOTDATABASE, "tags = " + tags);
                     insertData(db, name, description, climb, sea, fish, lace, tie, other, decor, favorite, tags);
                 }
                 eventType = xmlResourceParser.next();
@@ -95,8 +106,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private void updateData(SQLiteDatabase db, int oldVersion, int newVersion){
 
         if (oldVersion < 1) {
-            Log.e(KNOTDATABASE, "Create new DB");
-            db.execSQL("CREATE TABLE KNOT (" +
+            Log.d(KNOTDATABASE, "Create new DB");
+            db.execSQL("CREATE TABLE KNOTS (" +
                     "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "    NAME        TEXT," +
                     "    DESCRIPTION TEXT," +
@@ -114,10 +125,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         if (oldVersion < newVersion){     // УТОЧНИТЬ НАЗВАНИЕ ТАБЛИЦЫ В СТАРОЙ ВЕРСИИ ПРОГИ
-            Log.e(KNOTDATABASE, "update exist DB");
-            db.execSQL("CREATE TABLE KNOT_TMP AS SELECT * FROM KNOT;");
-            db.execSQL("DROP TABLE KNOT;");
-            db.execSQL("CREATE TABLE KNOT (" +
+            Log.d(KNOTDATABASE, "update exist DB");
+            db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
+            db.execSQL("DROP TABLE KNOTS;");
+            db.execSQL("CREATE TABLE KNOTS (" +
                     "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "    NAME        TEXT," +
                     "    DESCRIPTION TEXT," +
@@ -133,8 +144,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     ");");
             parseTable(db);
             Log.e(KNOTDATABASE, "end parse");
-            db.execSQL("UPDATE KNOT SET FAVORITE = (SELECT FAVORITE FROM KNOT_TMP WHERE KNOT_TMP._id = KNOT._id);");
-            db.execSQL("DROP TABLE KNOT_TMP;");
+            db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
+            db.execSQL("DROP TABLE KNOTS_TMP;");
         }
     }
 
