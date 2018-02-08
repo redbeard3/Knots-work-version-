@@ -64,6 +64,7 @@ public class SearchListFragment extends ListFragment {
             toast.show();
         }
     }
+
     @Override
     public void onAttach (Activity activity){
         super.onAttach(activity);

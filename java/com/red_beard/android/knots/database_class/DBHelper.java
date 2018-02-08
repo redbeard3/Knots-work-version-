@@ -21,8 +21,8 @@ import java.io.IOException;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "knots";
-    private static final int DB_VERSION = 1;
+    private static final String DB_NAME = "knotdb";
+    private static final int DB_VERSION = 2;
     private final Context myContext;
 
     private static final String KNOTDATABASE = "databaseLog";
@@ -60,8 +60,53 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert("KNOTS", null, knotData);
     }
 
+    private void parseTable(SQLiteDatabase db){
+
+        Resources resources = myContext.getResources();
+        XmlResourceParser xmlResourceParser = resources.getXml(R.xml.knots_db);
+        try{
+            int eventType = xmlResourceParser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT){
+                if ((eventType == XmlPullParser.START_TAG) && (xmlResourceParser.getName().equals("record"))) {
+                    String name = xmlResourceParser.getAttributeValue(null, "name");
+                        Log.e(KNOTDATABASE, "name = " + name);
+                    String description = xmlResourceParser.getAttributeValue(null, "desctription");
+                        Log.e(KNOTDATABASE, "description = " + description);
+                    String climb = xmlResourceParser.getAttributeValue(null, "climb");
+                        Log.e(KNOTDATABASE, "climb = " + climb);
+                    String sea = xmlResourceParser.getAttributeValue(null, "sea");
+                        Log.e(KNOTDATABASE, "sea = " + sea);
+                    String fish = xmlResourceParser.getAttributeValue(null, "fish");
+                        Log.e(KNOTDATABASE, "fish = " + fish);
+                    String lace = xmlResourceParser.getAttributeValue(null, "lace");
+                        Log.e(KNOTDATABASE, "lace = " + lace);
+                    String tie = xmlResourceParser.getAttributeValue(null, "tie");
+                        Log.e(KNOTDATABASE, "tie = " + tie);
+                    String other = xmlResourceParser.getAttributeValue(null, "other");
+                        Log.e(KNOTDATABASE, "other = " + other);
+                    String decor = xmlResourceParser.getAttributeValue(null, "decor");
+                        Log.e(KNOTDATABASE, "decor = " + decor);
+                    String favorite = xmlResourceParser.getAttributeValue(null, "favorite");
+                         Log.e(KNOTDATABASE, "favorite = " + favorite);
+                    String tags = xmlResourceParser.getAttributeValue(null, "tags");
+                        Log.e(KNOTDATABASE, "tags = " + tags);
+                    insertData(db, name, description, climb, sea, fish, lace, tie, other, decor, favorite, tags);
+                }
+                eventType = xmlResourceParser.next();
+            }
+        } catch (XmlPullParserException ex) {
+            Log.e("Parser", ex.getMessage(), ex);
+        } catch (IOException ex){
+            Log.e("IOExcepion", ex.getMessage(), ex);
+        } finally {
+            xmlResourceParser.close();
+        }
+    }
+
     private void updateData(SQLiteDatabase db, int oldVersion, int newVersion){
+
         if (oldVersion < 1) {
+            Log.d(KNOTDATABASE, "Create new DB");
             db.execSQL("CREATE TABLE KNOTS (" +
                     "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "    NAME        TEXT," +
@@ -76,40 +121,33 @@ public class DBHelper extends SQLiteOpenHelper {
                     "    FAVORITE    TEXT," +
                     "    TAGS        TEXT" +
                     ");");
-            Resources resources = myContext.getResources();
-            XmlResourceParser xmlResourceParser = resources.getXml(R.xml.knots_db);
-            try{
-                int eventType = xmlResourceParser.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT){
-                    if ((eventType == XmlPullParser.START_TAG) && (xmlResourceParser.getName().equals("record"))) {
-                        String name = xmlResourceParser.getAttributeValue(0);
-                        String description = xmlResourceParser.getAttributeValue(1);
-                        String climb = xmlResourceParser.getAttributeValue(2);
-                        String sea = xmlResourceParser.getAttributeValue(3);
-                        String fish = xmlResourceParser.getAttributeValue(4);
-                        String lace = xmlResourceParser.getAttributeValue(5);
-                        String tie = xmlResourceParser.getAttributeValue(6);
-                        String other = xmlResourceParser.getAttributeValue(7);
-                        String decor = xmlResourceParser.getAttributeValue(8);
-                        String favorite = xmlResourceParser.getAttributeValue(9);
-                        String tags = xmlResourceParser.getAttributeValue(10);
-                        insertData(db, name, description, climb, sea, fish, lace, tie, other, decor, favorite, tags);
-                    }
-                    eventType = xmlResourceParser.next();
-                }
-            } catch (XmlPullParserException ex) {
-                Log.e("Parser", ex.getMessage(), ex);
-            } catch (IOException ex){
-                Log.e("IOExcepion", ex.getMessage(), ex);
-            } finally {
-                xmlResourceParser.close();
-            }
+            parseTable(db);
         }
 
-        if (oldVersion < newVersion){
-
+        if (oldVersion < newVersion){     // УТОЧНИТЬ НАЗВАНИЕ ТАБЛИЦЫ В СТАРОЙ ВЕРСИИ ПРОГИ
+            Log.d(KNOTDATABASE, "update exist DB");
+            db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
+            db.execSQL("DROP TABLE KNOTS;");
+            db.execSQL("CREATE TABLE KNOTS (" +
+                    "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "    NAME        TEXT," +
+                    "    DESCRIPTION TEXT," +
+                    "    CLIMB       TEXT," +
+                    "    SEA         TEXT," +
+                    "    FISH        TEXT," +
+                    "    LACE        TEXT," +
+                    "    TIE         TEXT," +
+                    "    OTHER       TEXT," +
+                    "    DECOR       TEXT," +
+                    "    FAVORITE    TEXT," +
+                    "    TAGS        TEXT" +
+                    ");");
+            parseTable(db);
+            Log.e(KNOTDATABASE, "end parse");
+            db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
+            db.execSQL("DROP TABLE KNOTS_TMP;");
         }
-
     }
 
 }
+
