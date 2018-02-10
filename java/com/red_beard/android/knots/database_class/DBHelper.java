@@ -22,7 +22,7 @@ import java.io.IOException;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "knotdb";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 1;
     private final Context myContext;
 
     private static final String KNOTDATABASE = "databaseLog";
