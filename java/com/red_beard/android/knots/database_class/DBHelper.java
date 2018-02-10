@@ -71,25 +71,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     String name = xmlResourceParser.getAttributeValue(null, "name");
                         Log.e(KNOTDATABASE, "name = " + name);
                     String description = xmlResourceParser.getAttributeValue(null, "desctription");
-                        Log.e(KNOTDATABASE, "description = " + description);
                     String climb = xmlResourceParser.getAttributeValue(null, "climb");
-                        Log.e(KNOTDATABASE, "climb = " + climb);
                     String sea = xmlResourceParser.getAttributeValue(null, "sea");
-                        Log.e(KNOTDATABASE, "sea = " + sea);
                     String fish = xmlResourceParser.getAttributeValue(null, "fish");
-                        Log.e(KNOTDATABASE, "fish = " + fish);
-                    String lace = xmlResourceParser.getAttributeValue(null, "lace");
-                        Log.e(KNOTDATABASE, "lace = " + lace);
+                    String lace = xmlResourceParser.getAttributeValue(null, "lase");
                     String tie = xmlResourceParser.getAttributeValue(null, "tie");
-                        Log.e(KNOTDATABASE, "tie = " + tie);
                     String other = xmlResourceParser.getAttributeValue(null, "other");
-                        Log.e(KNOTDATABASE, "other = " + other);
                     String decor = xmlResourceParser.getAttributeValue(null, "decor");
-                        Log.e(KNOTDATABASE, "decor = " + decor);
                     String favorite = xmlResourceParser.getAttributeValue(null, "favorite");
-                         Log.e(KNOTDATABASE, "favorite = " + favorite);
                     String tags = xmlResourceParser.getAttributeValue(null, "tags");
-                        Log.e(KNOTDATABASE, "tags = " + tags);
                     insertData(db, name, description, climb, sea, fish, lace, tie, other, decor, favorite, tags);
                 }
                 eventType = xmlResourceParser.next();
