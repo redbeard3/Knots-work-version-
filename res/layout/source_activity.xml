@@ -24,7 +24,7 @@
 
 
         <TextView
-            android:text="@string/versionApp"
+            android:id="@+id/versionName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/textSizeVersionApp"
