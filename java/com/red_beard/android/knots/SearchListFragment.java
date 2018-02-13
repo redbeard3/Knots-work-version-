@@ -49,7 +49,7 @@ public class SearchListFragment extends ListFragment {
 
     private void setOnDataBaseQuery(String query){
         try {
-            cursor = db.query("KNOT",
+            cursor = db.query("KNOTS",
                     new String[]{"_id", "NAME", "DESCRIPTION", "CLIMB", "SEA", "FISH", "OTHER", "TIE", "LACE", "TAGS"},
                     "("+"NAME"+" LIKE '%"+query+"%') " + "OR ("+"DESCRIPTION"+" LIKE '%" + query+"%')" +
                             " OR ("+"TAGS"+" LIKE '%" + query+"%')",

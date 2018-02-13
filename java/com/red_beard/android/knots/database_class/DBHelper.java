@@ -22,7 +22,7 @@ import java.io.IOException;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "knotdb";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 1;
     private final Context myContext;
 
     private static final String KNOTDATABASE = "databaseLog";
@@ -57,7 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
         knotData.put("DECOR", decor);
         knotData.put("FAVORITE", favorite);
         knotData.put("TAGS", tags);
-        db.insert("KNOT", null, knotData);
+        db.insert("KNOTS", null, knotData);
     }
 
     private void parseTable(SQLiteDatabase db){
@@ -97,7 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 1) {
             Log.d(KNOTDATABASE, "Create new DB");
-            db.execSQL("CREATE TABLE KNOT (" +
+            db.execSQL("CREATE TABLE KNOTS (" +
                     "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "    NAME        TEXT," +
                     "    DESCRIPTION TEXT," +
@@ -117,8 +117,8 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldVersion < newVersion){     // УТОЧНИТЬ НАЗВАНИЕ ТАБЛИЦЫ В СТАРОЙ ВЕРСИИ ПРОГИ - KNOT
             Log.d(KNOTDATABASE, "update exist DB");
             db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
-            db.execSQL("DROP TABLE KNOT;");
-            db.execSQL("CREATE TABLE KNOT (" +
+            db.execSQL("DROP TABLE KNOTS;");
+            db.execSQL("CREATE TABLE KNOTS (" +
                     "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "    NAME        TEXT," +
                     "    DESCRIPTION TEXT," +
@@ -134,7 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     ");");
             parseTable(db);
             Log.e(KNOTDATABASE, "end parse");
-            db.execSQL("UPDATE KNOT SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOT._id);");
+            db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
             db.execSQL("DROP TABLE KNOTS_TMP;");
         }
     }

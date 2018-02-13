@@ -112,7 +112,7 @@ public class KnotListFragment extends ListFragment {
 
     private void openKnotList(String typeKnotList){
         try {
-            cursor = db.query("KNOT",
+            cursor = db.query("KNOTS",
                     new String[] {"_id", "NAME"},
                     typeKnotList,
                     null, null, null,
