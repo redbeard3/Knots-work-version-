@@ -70,7 +70,6 @@ public class DBHelper extends SQLiteOpenHelper {
             while (eventType != XmlPullParser.END_DOCUMENT){
                 if ((eventType == XmlPullParser.START_TAG) && (xmlResourceParser.getName().equals("record"))) {
                     String name = xmlResourceParser.getAttributeValue(null, "name");
-                        Log.e(KNOTDATABASE, "name = " + name);
                     String description = xmlResourceParser.getAttributeValue(null, "desctription");
                     String climb = xmlResourceParser.getAttributeValue(null, "climb");
                     String sea = xmlResourceParser.getAttributeValue(null, "sea");
@@ -91,6 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.e("IOExcepion", ex.getMessage(), ex);
         } finally {
             xmlResourceParser.close();
+            Log.d(KNOTDATABASE, "end parse table");
         }
     }
 
@@ -98,30 +98,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 1) {
             Log.d(KNOTDATABASE, "Create new DB");
-            sqlCreateTable(db, "KNOTS");
-            parseTable(db);
+            if (doesTableExist(db, "KNOT")){
+                Log.e(KNOTDATABASE, "table KNOT exists and updates from KNOT");
+                sqlUpdateExistsTable(db, "KNOT");
+            }else {
+                Log.e(KNOTDATABASE, "table KNOT doesn't exist and create new table KNOTS");
+                sqlCreateTable(db, "KNOTS");
+                parseTable(db);
+            }
         }
 
         if (newVersion > 1){
-            if (doesTableExist(db, "KNOT")){
-                Log.e(KNOTDATABASE, "table KNOT is exist and update from KNOT");
-                db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOT;");
-                db.execSQL("DROP TABLE KNOT;");
-                sqlCreateTable(db,"KNOTS");
-                parseTable(db);
-                Log.e(KNOTDATABASE, "end parse");
-                db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOT_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
-                db.execSQL("DROP TABLE KNOTS_TMP;");
-            } else {
                 Log.d(KNOTDATABASE, "update exist DB KNOTS");
-                db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
-                db.execSQL("DROP TABLE KNOTS;");
-                sqlCreateTable(db,"KNOTS");
-                parseTable(db);
-                Log.e(KNOTDATABASE, "end parse");
-                db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
-                db.execSQL("DROP TABLE KNOTS_TMP;");
-            }
+                sqlUpdateExistsTable(db, "KNOTS");
         }
     }
 
@@ -153,6 +142,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 "    FAVORITE    TEXT," +
                 "    TAGS        TEXT" +
                 ");");
+    }
+
+    private void sqlUpdateExistsTable(SQLiteDatabase db, String tableName){
+        db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM '"+ tableName +"';");
+        db.execSQL("DROP TABLE '"+ tableName +"';");
+        sqlCreateTable(db,"KNOTS");
+        parseTable(db);
+        Log.e(KNOTDATABASE, "end parse");
+        db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
+        db.execSQL("DROP TABLE KNOTS_TMP;");
     }
 
 }
