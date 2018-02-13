@@ -98,52 +98,34 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 1) {
             Log.d(KNOTDATABASE, "Create new DB");
-            db.execSQL("CREATE TABLE KNOTS (" +
-                    "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "    NAME        TEXT," +
-                    "    DESCRIPTION TEXT," +
-                    "    CLIMB       TEXT," +
-                    "    SEA         TEXT," +
-                    "    FISH        TEXT," +
-                    "    LACE        TEXT," +
-                    "    TIE         TEXT," +
-                    "    OTHER       TEXT," +
-                    "    DECOR       TEXT," +
-                    "    FAVORITE    TEXT," +
-                    "    TAGS        TEXT" +
-                    ");");
+            sqlCreateTable(db, "KNOTS");
             parseTable(db);
         }
 
-        if (oldVersion < newVersion){     // УТОЧНИТЬ НАЗВАНИЕ ТАБЛИЦЫ В СТАРОЙ ВЕРСИИ ПРОГИ - KNOT
+        if (newVersion > 1){
             if (doesTableExist(db, "KNOT")){
-                Log.e(KNOTDATABASE, "table KNOT is exist");
+                Log.e(KNOTDATABASE, "table KNOT is exist and update from KNOT");
+                db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOT;");
+                db.execSQL("DROP TABLE KNOT;");
+                sqlCreateTable(db,"KNOTS");
+                parseTable(db);
+                Log.e(KNOTDATABASE, "end parse");
+                db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOT_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
+                db.execSQL("DROP TABLE KNOTS_TMP;");
+            } else {
+                Log.d(KNOTDATABASE, "update exist DB KNOTS");
+                db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
+                db.execSQL("DROP TABLE KNOTS;");
+                sqlCreateTable(db,"KNOTS");
+                parseTable(db);
+                Log.e(KNOTDATABASE, "end parse");
+                db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
+                db.execSQL("DROP TABLE KNOTS_TMP;");
             }
-            Log.d(KNOTDATABASE, "update exist DB");
-            db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
-            db.execSQL("DROP TABLE KNOTS;");
-            db.execSQL("CREATE TABLE KNOTS (" +
-                    "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "    NAME        TEXT," +
-                    "    DESCRIPTION TEXT," +
-                    "    CLIMB       TEXT," +
-                    "    SEA         TEXT," +
-                    "    FISH        TEXT," +
-                    "    LACE        TEXT," +
-                    "    TIE         TEXT," +
-                    "    OTHER       TEXT," +
-                    "    DECOR       TEXT," +
-                    "    FAVORITE    TEXT," +
-                    "    TAGS        TEXT" +
-                    ");");
-            parseTable(db);
-            Log.e(KNOTDATABASE, "end parse");
-            db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
-            db.execSQL("DROP TABLE KNOTS_TMP;");
         }
     }
 
-    public boolean doesTableExist(SQLiteDatabase db, String tableName) {
+    private boolean doesTableExist(SQLiteDatabase db, String tableName) {
         Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
 
         if (cursor != null) {
@@ -154,6 +136,23 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return false;
+    }
+
+    private void sqlCreateTable(SQLiteDatabase db, String tableName){
+        db.execSQL("CREATE TABLE '"+ tableName+"' (" +
+                "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "    NAME        TEXT," +
+                "    DESCRIPTION TEXT," +
+                "    CLIMB       TEXT," +
+                "    SEA         TEXT," +
+                "    FISH        TEXT," +
+                "    LACE        TEXT," +
+                "    TIE         TEXT," +
+                "    OTHER       TEXT," +
+                "    DECOR       TEXT," +
+                "    FAVORITE    TEXT," +
+                "    TAGS        TEXT" +
+                ");");
     }
 
 }
