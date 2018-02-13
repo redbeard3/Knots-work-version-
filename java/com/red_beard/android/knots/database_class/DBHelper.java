@@ -114,7 +114,7 @@ public class DBHelper extends SQLiteOpenHelper {
             parseTable(db);
         }
 
-        if (oldVersion < newVersion){     // УТОЧНИТЬ НАЗВАНИЕ ТАБЛИЦЫ В СТАРОЙ ВЕРСИИ ПРОГИ
+        if (oldVersion < newVersion){     // УТОЧНИТЬ НАЗВАНИЕ ТАБЛИЦЫ В СТАРОЙ ВЕРСИИ ПРОГИ - KNOT
             Log.d(KNOTDATABASE, "update exist DB");
             db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
             db.execSQL("DROP TABLE KNOTS;");
