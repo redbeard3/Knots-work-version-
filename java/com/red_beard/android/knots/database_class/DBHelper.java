@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -115,6 +116,9 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         if (oldVersion < newVersion){     // УТОЧНИТЬ НАЗВАНИЕ ТАБЛИЦЫ В СТАРОЙ ВЕРСИИ ПРОГИ - KNOT
+            if (doesTableExist(db, "KNOT")){
+                Log.e(KNOTDATABASE, "table KNOT is exist");
+            }
             Log.d(KNOTDATABASE, "update exist DB");
             db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM KNOTS;");
             db.execSQL("DROP TABLE KNOTS;");
@@ -137,6 +141,19 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
             db.execSQL("DROP TABLE KNOTS_TMP;");
         }
+    }
+
+    public boolean doesTableExist(SQLiteDatabase db, String tableName) {
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
+
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
     }
 
 }
