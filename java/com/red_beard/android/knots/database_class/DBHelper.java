@@ -16,10 +16,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
-/**
- * Created by red beard on 25.01.2018.
- */
-
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "knotdb";
@@ -45,20 +41,62 @@ public class DBHelper extends SQLiteOpenHelper {
         updateData(db, oldVersion, newVersion);
     }
 
-    private static void insertData(SQLiteDatabase db, String name, String description, String climb, String sea, String fish, String lace, String tie, String other, String decor, String favorite, String tags){
-        ContentValues knotData = new ContentValues();
-        knotData.put("NAME", name);
-        knotData.put("DESCRIPTION", description);
-        knotData.put("CLIMB", climb);
-        knotData.put("SEA", sea);
-        knotData.put("FISH", fish);
-        knotData.put("LACE", lace);
-        knotData.put("TIE", tie);
-        knotData.put("OTHER", other);
-        knotData.put("DECOR", decor);
-        knotData.put("FAVORITE", favorite);
-        knotData.put("TAGS", tags);
-        db.insert("KNOTS", null, knotData);
+    private void updateData(SQLiteDatabase db, int oldVersion, int newVersion){
+
+        if (oldVersion < 1) {
+            Log.d(KNOTDATABASE, "Create new DB");
+            if (doesTableExist(db, "KNOT")){
+                Log.d(KNOTDATABASE, "table KNOT exists and updates from KNOT");
+                sqlUpdateExistsTable(db, "KNOT");
+            }else {
+                Log.d(KNOTDATABASE, "table KNOT doesn't exist and create new table KNOTS");
+                sqlCreateTable(db, "KNOTS");
+            }
+        }
+
+        if (newVersion > 1){
+            Log.d(KNOTDATABASE, "update exist DB KNOTS");
+            sqlUpdateExistsTable(db, "KNOTS");
+        }
+    }
+
+    private boolean doesTableExist(SQLiteDatabase db, String tableName) {
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
+
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
+    private void sqlUpdateExistsTable(SQLiteDatabase db, String tableName){
+        db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM '"+ tableName +"';");
+        db.execSQL("DROP TABLE '"+ tableName +"';");
+        sqlCreateTable(db,"KNOTS");
+        db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
+        db.execSQL("DROP TABLE KNOTS_TMP;");
+    }
+
+    private void sqlCreateTable(SQLiteDatabase db, String tableName){
+        db.execSQL("CREATE TABLE '"+ tableName+"' (" +
+                "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "    NAME        TEXT," +
+                "    DESCRIPTION TEXT," +
+                "    CLIMB       TEXT," +
+                "    SEA         TEXT," +
+                "    FISH        TEXT," +
+                "    LACE        TEXT," +
+                "    TIE         TEXT," +
+                "    OTHER       TEXT," +
+                "    DECOR       TEXT," +
+                "    FAVORITE    TEXT," +
+                "    TAGS        TEXT" +
+                ");");
+        parseTable(db);
     }
 
     private void parseTable(SQLiteDatabase db){
@@ -94,63 +132,20 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void updateData(SQLiteDatabase db, int oldVersion, int newVersion){
-
-        if (oldVersion < 1) {
-            Log.d(KNOTDATABASE, "Create new DB");
-            if (doesTableExist(db, "KNOT")){
-                Log.d(KNOTDATABASE, "table KNOT exists and updates from KNOT");
-                sqlUpdateExistsTable(db, "KNOT");
-            }else {
-                Log.d(KNOTDATABASE, "table KNOT doesn't exist and create new table KNOTS");
-                sqlCreateTable(db, "KNOTS");
-            }
-        }
-
-        if (newVersion > 1){
-                Log.d(KNOTDATABASE, "update exist DB KNOTS");
-                sqlUpdateExistsTable(db, "KNOTS");
-        }
+    private static void insertData(SQLiteDatabase db, String name, String description, String climb, String sea, String fish, String lace, String tie, String other, String decor, String favorite, String tags){
+        ContentValues knotData = new ContentValues();
+        knotData.put("NAME", name);
+        knotData.put("DESCRIPTION", description);
+        knotData.put("CLIMB", climb);
+        knotData.put("SEA", sea);
+        knotData.put("FISH", fish);
+        knotData.put("LACE", lace);
+        knotData.put("TIE", tie);
+        knotData.put("OTHER", other);
+        knotData.put("DECOR", decor);
+        knotData.put("FAVORITE", favorite);
+        knotData.put("TAGS", tags);
+        db.insert("KNOTS", null, knotData);
     }
-
-    private boolean doesTableExist(SQLiteDatabase db, String tableName) {
-        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
-
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                cursor.close();
-                return true;
-            }
-            cursor.close();
-        }
-        return false;
-    }
-
-    private void sqlCreateTable(SQLiteDatabase db, String tableName){
-        db.execSQL("CREATE TABLE '"+ tableName+"' (" +
-                "    _id         INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "    NAME        TEXT," +
-                "    DESCRIPTION TEXT," +
-                "    CLIMB       TEXT," +
-                "    SEA         TEXT," +
-                "    FISH        TEXT," +
-                "    LACE        TEXT," +
-                "    TIE         TEXT," +
-                "    OTHER       TEXT," +
-                "    DECOR       TEXT," +
-                "    FAVORITE    TEXT," +
-                "    TAGS        TEXT" +
-                ");");
-        parseTable(db);
-    }
-
-    private void sqlUpdateExistsTable(SQLiteDatabase db, String tableName){
-        db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM '"+ tableName +"';");
-        db.execSQL("DROP TABLE '"+ tableName +"';");
-        sqlCreateTable(db,"KNOTS");
-        db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
-        db.execSQL("DROP TABLE KNOTS_TMP;");
-    }
-
 }
 
