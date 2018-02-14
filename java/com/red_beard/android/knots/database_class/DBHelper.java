@@ -99,12 +99,11 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldVersion < 1) {
             Log.d(KNOTDATABASE, "Create new DB");
             if (doesTableExist(db, "KNOT")){
-                Log.e(KNOTDATABASE, "table KNOT exists and updates from KNOT");
+                Log.d(KNOTDATABASE, "table KNOT exists and updates from KNOT");
                 sqlUpdateExistsTable(db, "KNOT");
             }else {
-                Log.e(KNOTDATABASE, "table KNOT doesn't exist and create new table KNOTS");
+                Log.d(KNOTDATABASE, "table KNOT doesn't exist and create new table KNOTS");
                 sqlCreateTable(db, "KNOTS");
-                parseTable(db);
             }
         }
 
@@ -142,14 +141,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 "    FAVORITE    TEXT," +
                 "    TAGS        TEXT" +
                 ");");
+        parseTable(db);
     }
 
     private void sqlUpdateExistsTable(SQLiteDatabase db, String tableName){
         db.execSQL("CREATE TABLE KNOTS_TMP AS SELECT * FROM '"+ tableName +"';");
         db.execSQL("DROP TABLE '"+ tableName +"';");
         sqlCreateTable(db,"KNOTS");
-        parseTable(db);
-        Log.e(KNOTDATABASE, "end parse");
         db.execSQL("UPDATE KNOTS SET FAVORITE = (SELECT FAVORITE FROM KNOTS_TMP WHERE KNOTS_TMP._id = KNOTS._id);");
         db.execSQL("DROP TABLE KNOTS_TMP;");
     }
