@@ -57,4 +57,11 @@
     <string name="useful">Полезное</string>
     <string name="communicate">Коммуникации</string>
     <string name="estimate">Оценить приложение</string>
+    <string name="tools">Инструменты</string>
+    <string name="settings">Настройки</string>
+
+    <string name="title_activity_settings">Настройки</string>
+    <string name="pref_header_general">Основные</string>
+    <string name="pref_description_switch_of_view">Переключить на вид по категориям узлов (по Скрягину)</string>
+    <string name="pref_title_switch_of_view">Переключить вид отображения категорий</string>
 </resources>
