@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory
+        android:title="@string/pref_header_general"
+        android:key="pref_key_general_settings">
+
+        <ListPreference
+            android:key="pref_type_view"
+            android:title="@string/pref_title_type_of_view"
+            android:entries="@array/pref_type_of_view_entries"
+            android:entryValues="@array/pref_type_of_view_values"
+            android:defaultValue="@string/pref_type_of_view_default"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
