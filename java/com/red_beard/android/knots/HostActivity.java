@@ -2,8 +2,10 @@ package com.red_beard.android.knots;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.red_beard.android.knots.preferences.SettingActivity;
 
 public class HostActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -46,6 +51,14 @@ public class HostActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.activity_host_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String prefTypeOfView = sharedPref.getString(getString(R.string.pref_type_view), "");
+        Toast.makeText(this, prefTypeOfView, Toast.LENGTH_SHORT).show(); // для проверки работы настроек!!!
     }
 
     @Override
@@ -154,6 +167,9 @@ public class HostActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
             Intent mailIntent = SimpleEMail.newIntent(HostActivity.this);
             startActivity(mailIntent);
+        } else if(id == R.id.nav_settings) {
+            Intent settingIntent = SettingActivity.newIntent(HostActivity.this);
+            startActivity(settingIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_host_drawer_layout);
