@@ -65,6 +65,10 @@
     <string name="pref_description_switch_of_view">Переключить на вид по категориям узлов (по Скрягину)</string>
     <string name="pref_title_type_of_view">Переключить вид отображения категорий</string>
     <string name="pref_type_view">pref_type_view</string>
+    <string name="pref_description_text_size">pref_description_text_size</string>
+    <string name="pref_title_description_text_size">Размер шрифта</string>
+    <string name="pref_dialog_title_description_text_size">Введите размер шрифта (от 10 до 32)</string>
+    <string name="pref_summary_description_text_size">Устанавливает новый размер шрифта</string>
 
     <array name="pref_type_of_view_values">
         <item>Classic</item>

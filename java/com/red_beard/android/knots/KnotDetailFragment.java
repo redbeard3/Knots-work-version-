@@ -1,11 +1,13 @@
 package com.red_beard.android.knots;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,15 @@ public class KnotDetailFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_knot_detail, container, false);
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        float textSize = Float.parseFloat(sharedPref.getString(getString(R.string.pref_description_text_size),"15"));
+        knotDescriptionTextView.setTextSize(textSize);
+        //Toast.makeText(this, prefTypeOfView, Toast.LENGTH_SHORT).show(); // для проверки работы настроек!!!
     }
 
     @Override

@@ -12,6 +12,12 @@
             android:entryValues="@array/pref_type_of_view_values"
             android:defaultValue="@string/pref_type_of_view_default"/>
 
+        <EditTextPreference
+            android:key="@string/pref_description_text_size"
+            android:title="@string/pref_title_description_text_size"
+            android:dialogTitle="@string/pref_dialog_title_description_text_size"
+            android:summary="@string/pref_summary_description_text_size"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
