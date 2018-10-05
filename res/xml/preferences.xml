@@ -6,7 +6,7 @@
         android:key="pref_key_general_settings">
 
         <ListPreference
-            android:key="pref_type_view"
+            android:key="@string/pref_type_view"
             android:title="@string/pref_title_type_of_view"
             android:entries="@array/pref_type_of_view_entries"
             android:entryValues="@array/pref_type_of_view_values"

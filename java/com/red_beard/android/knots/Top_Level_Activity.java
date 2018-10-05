@@ -1,24 +1,29 @@
 package com.red_beard.android.knots;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.red_beard.android.knots.preferences.SettingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,9 @@ public class Top_Level_Activity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_level);
+
+        PreferenceManager.setDefaultValues(this,R.xml.preferences, false);  // задание настроек по умолчанию
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.top_level_toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,6 +68,14 @@ public class Top_Level_Activity extends AppCompatActivity
 
         kindAdapter = new KindAdapter(topList);
         topRecyclerView.setAdapter(kindAdapter);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String prefTypeOfView = sharedPref.getString(getString(R.string.pref_type_view), "");
+        Toast.makeText(this, prefTypeOfView, Toast.LENGTH_SHORT).show(); // для проверки работы настроек!!!
     }
 
     private class KnotListView {
@@ -192,10 +208,14 @@ public class Top_Level_Activity extends AppCompatActivity
             } catch (android.content.ActivityNotFoundException anfe) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
             }
+        } else if(id == R.id.nav_settings){
+            Intent settingIntent = SettingActivity.newIntent(Top_Level_Activity.this);
+            startActivity(settingIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.top_level_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

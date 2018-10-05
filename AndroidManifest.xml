@@ -36,6 +36,9 @@
             android:name=".SimpleEMail"
             android:label="@string/feedback"
             android:parentActivityName=".Top_Level_Activity" />
+        <activity android:name=".preferences.SettingActivity"
+            android:parentActivityName=".Top_Level_Activity"/>
+
     </application>
 
 </manifest>

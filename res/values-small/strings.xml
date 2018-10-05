@@ -63,5 +63,17 @@
     <string name="title_activity_settings">Настройки</string>
     <string name="pref_header_general">Основные</string>
     <string name="pref_description_switch_of_view">Переключить на вид по категориям узлов (по Скрягину)</string>
-    <string name="pref_title_switch_of_view">Переключить вид отображения категорий</string>
+    <string name="pref_title_type_of_view">Переключить вид отображения категорий</string>
+    <string name="pref_type_view">pref_type_view</string>
+
+    <array name="pref_type_of_view_values">
+        <item>Classic</item>
+        <item>About Scryagin</item>
+    </array>
+
+    <array name="pref_type_of_view_entries">
+        <item>Классический вид</item>
+        <item>По Скрягину</item>
+    </array>
+    <string name="pref_type_of_view_default">Классический вид</string>
 </resources>
