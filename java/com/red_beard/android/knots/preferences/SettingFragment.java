@@ -9,6 +9,7 @@ import com.red_beard.android.knots.R;
 
 /**
  * Created by red beard on 27.09.2018.
+ test
  */
 
 public class SettingFragment extends PreferenceFragment implements
